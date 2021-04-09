@@ -1,5 +1,6 @@
 from random import randint
 import operator
+from race import Race
 
     ### Determines character stats using 5th Edition method ###
 
@@ -10,6 +11,7 @@ class Character:
 
     def __init__(self, name):
         self.name = name
+        self.race = Race()
         self.scores = {'Strength': 0, 'Dexterity': 0, 'Constitution': 0,
                    'Intelligence': 0, 'Wisdom': 0, 'Charisma': 0,}
         self.scores['Strength'] = self.getRoll()
@@ -23,10 +25,24 @@ class Character:
                    'Intelligence': 0, 'Wisdom': 0, 'Charisma': 0,}
         self.getMods()
 
+    def getAbilityScore(self, ability):
+        return self.scores[ability] + self.race.getRaceAdjustments(ability)
+
+
     
     def printStats(self):
-       for k, v in self.scores.items():
-           print(f'{k} is {v}')
+        
+        #for k, v in self.scores.items():
+        #print(f'{k} is {v}')
+        print(f'Your race is {self.race.getRace()}')
+        print(f"You're class is {self.class_name}")
+        print(self.modifiers)
+        for k, v in self.scores.items():
+            print(f'{k} is {v + self.race.getRaceAdjustments(k)}')
+
+        
+            
+
     
 
    ### Rolls 4 d6, removes lowest value and prints out total. ###
@@ -40,7 +56,7 @@ class Character:
     
     def getClass(self):
         s = sorted(self.scores.items(), key = lambda x:x[1])
-        print(s)
+        
         primary = s[-1][0]
         secondary = s[-2][0]
 
@@ -95,7 +111,7 @@ class Character:
             else:
                 self.class_name = 'Warlock'
         
-        print(f"You're class is {self.class_name}")
+        
 
                
     def getMods(self):
@@ -109,7 +125,7 @@ class Character:
                 else:
                     mod += 1
                     score += 2
-        print(self.modifiers)
+        
 
             
 
