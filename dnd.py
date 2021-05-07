@@ -7,18 +7,20 @@ class Stats:
         self.character = character
    ### Rolls 4 d6, removes lowest value and prints out total. ###
     def getStat(self):
-        value = []
+      
         score = {'Strength': 0, 'Dexterity': 0, 'Constitution': 0,
                    'Intelligence': 0, 'Wisdom': 0, 'Charisma': 0,}
-        for k in list(score.items()):
+        for k in score.keys():
+            print(k)
+            value = []
             for i in range(4):
                 roll = [randint(1,6)]
                 value.append(roll.pop())
 # This is not looping correctly, keeps adding results to value,
             value.remove(min(value))
-        print(value)
-        print(sum(value))
-            
+            print(value)
+            print(sum(value))
+            score[k] = sum(value)
             
             
                
