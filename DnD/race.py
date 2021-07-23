@@ -1,9 +1,19 @@
 from random import randint
+
+### Randomly picks a race for your character
 class Race:
     races = ['Dwarf', 'Elf', 'Halfling', 'Human', 'Dragonborn', 'Gnome', 'Half-Elf', 'Half-Orc', 'Tiefling']
     def __init__(self):
         self.race = randint(0,len(self.races)- 1)
-    
+
+### Has user select character's race
+    #def chooseRace(self):
+        #for race in self.races:
+            #print(f"{race}")
+        #print("Choose a race for your character. ")
+
+
+    ### Chooses a random race
     def getRace(self):
         return self.races[self.race]
     

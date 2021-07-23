@@ -12,6 +12,81 @@ class Character:
     def __init__(self, name):
         self.name = name
         self.race = Race()
+        self.rolls = []
+        self.scores = {'Strength': 0, 'Dexterity': 0, 'Constitution': 0,
+                   'Intelligence': 0, 'Wisdom': 0, 'Charisma': 0,}
+        self.scores['Strength'] = 00
+        self.scores['Dexterity'] = 99
+        self.scores['Constitution'] = 99
+        self.scores['Intelligence'] = 99
+        self.scores['Wisdom'] = 99
+        self.scores['Charisma'] = 99
+        #self.getClass()
+        self.modifiers = {'Strength': 0, 'Dexterity': 0, 'Constitution': 0,
+                   'Intelligence': 0, 'Wisdom': 0, 'Charisma': 0,}
+        #self.getMods()
+
+    def rollStats(self):
+        value = []
+        for i in range(6):
+            for i in range(4):
+                roll = [randint(1,6)]
+                value.append(roll.pop())
+            value.remove(min(value))
+            self.rolls.append(sum(value))
+            value.clear()
+            self.rolls.sort()
+            
+        
+
+    def assignScores(self):
+        
+        scores = self.scores
+        rolls = self.rolls
+        for key in scores.keys():
+            print(f"Assign a score for {key}: ")
+            print(rolls)
+            
+            choice = input()
+
+
+    # Adds race modifiers to Ability Scores if applicable
+    def getAbilityScore(self, ability):
+        return self.scores[ability] + self.race.getRaceAdjustments(ability)
+
+
+    ### prints Race, Class, ability scores, and modifiers
+    def printStats(self):
+        
+        #for k, v in self.scores.items():
+        #print(f'{k} is {v}')
+        print(f'Your race is {self.race.getRace()}')
+        print(f"You're class is {self.class_name}")
+        print(self.modifiers)
+        for k, v in self.scores.items():
+            print(f'{k} is {v + self.race.getRaceAdjustments(k)}')
+
+        
+    ### determines modifiers            
+    def getMods(self):
+        for k, v in self.scores.items():
+            mod = -4
+            score = 3
+            while score < 20:
+                if v <= score:
+                    self.modifiers[k] = mod
+                    score = 21
+                else:
+                    mod += 1
+                    score += 2
+
+
+### call this subclass to generate ability scores, determine race and class
+class RandomCharacter(Character):
+    def __init__(self, name):
+        super().__init__(name)
+        self.name = name
+        self.race = Race()
         self.scores = {'Strength': 0, 'Dexterity': 0, 'Constitution': 0,
                    'Intelligence': 0, 'Wisdom': 0, 'Charisma': 0,}
         self.scores['Strength'] = self.getRoll()
@@ -25,27 +100,7 @@ class Character:
                    'Intelligence': 0, 'Wisdom': 0, 'Charisma': 0,}
         self.getMods()
 
-    def getAbilityScore(self, ability):
-        return self.scores[ability] + self.race.getRaceAdjustments(ability)
-
-
-    
-    def printStats(self):
-        
-        #for k, v in self.scores.items():
-        #print(f'{k} is {v}')
-        print(f'Your race is {self.race.getRace()}')
-        print(f"You're class is {self.class_name}")
-        print(self.modifiers)
-        for k, v in self.scores.items():
-            print(f'{k} is {v + self.race.getRaceAdjustments(k)}')
-
-        
-            
-
-    
-
-   ### Rolls 4 d6, removes lowest value and prints out total. ###
+### Rolls 4 d6, removes lowest value and prints out total. ###
     def getRoll(self):
             value = []
             for i in range(4):
@@ -53,7 +108,9 @@ class Character:
                 value.append(roll.pop())
             value.remove(min(value))
             return sum(value)
-    
+
+
+### uses results of getRoll() to determine best class based on ability score           
     def getClass(self):
         s = sorted(self.scores.items(), key = lambda x:x[1])
         
@@ -110,28 +167,6 @@ class Character:
                 self.class_name = 'Wizard'
             else:
                 self.class_name = 'Warlock'
-        
-        
-
-               
-    def getMods(self):
-        for k, v in self.scores.items():
-            mod = -4
-            score = 3
-            while score < 20:
-                if v <= score:
-                    self.modifiers[k] = mod
-                    score = 21
-                else:
-                    mod += 1
-                    score += 2
-        
-
-            
-
-john = Character('John')
-
-john.printStats()
 
 
 
