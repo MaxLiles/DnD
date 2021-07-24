@@ -1,3 +1,4 @@
+
 from random import randint
 import operator
 from race import Race
@@ -5,26 +6,68 @@ from race import Race
     ### Determines character stats using 5th Edition method ###
 
 class Character:
-    class_name = None
-    name = None
+    classes = ['Barbarian', 'Bard', 'Cleric', 'Druid', 'Fighter', 'Monk', 'Paladin',
+        'Ranger', 'Rogue', 'Sorcerer', 'Warlock', 'Wizard']
+    
+    
 
 
     def __init__(self, name):
         self.name = name
+        self.class_name = self.chooseClass()
         self.race = Race()
         self.rolls = []
         self.scores = {'Strength': 0, 'Dexterity': 0, 'Constitution': 0,
                    'Intelligence': 0, 'Wisdom': 0, 'Charisma': 0,}
-        self.scores['Strength'] = 00
-        self.scores['Dexterity'] = 99
-        self.scores['Constitution'] = 99
-        self.scores['Intelligence'] = 99
-        self.scores['Wisdom'] = 99
-        self.scores['Charisma'] = 99
-        #self.getClass()
+        
+        self.rollStats()
+        self.assignScores()
+        
+        
+        
+        
         self.modifiers = {'Strength': 0, 'Dexterity': 0, 'Constitution': 0,
                    'Intelligence': 0, 'Wisdom': 0, 'Charisma': 0,}
-        #self.getMods()
+        self.getMods()
+        self.printStats()
+    
+    def chooseClass(self):
+        
+        classes = self.classes
+        
+        while True:
+            classChoice = input('Please select a class: ')
+            if classChoice.capitalize() in classes:
+                return classChoice
+            else:
+                print('Please select a valid class.')
+    
+    
+                     
+            
+                
+                
+
+    def assignScores(self):
+        
+        scores = self.scores
+        rolls = self.rolls
+        
+        for k,v in list(scores.items()):
+            print(f"Assign a score for {k}: ")
+            print(rolls)
+            while True:
+
+                choice = int(input())
+                if choice in rolls:
+                    rolls.remove(choice)
+                    break
+                else:
+                    print('Please select a valid score.')
+                    print(rolls)
+
+            scores[k] = choice 
+        
 
     def rollStats(self):
         value = []
@@ -39,17 +82,6 @@ class Character:
             
         
 
-    def assignScores(self):
-        
-        scores = self.scores
-        rolls = self.rolls
-        for key in scores.keys():
-            print(f"Assign a score for {key}: ")
-            print(rolls)
-            
-            choice = input()
-
-
     # Adds race modifiers to Ability Scores if applicable
     def getAbilityScore(self, ability):
         return self.scores[ability] + self.race.getRaceAdjustments(ability)
@@ -60,11 +92,11 @@ class Character:
         
         #for k, v in self.scores.items():
         #print(f'{k} is {v}')
-        print(f'Your race is {self.race.getRace()}')
-        print(f"You're class is {self.class_name}")
+        print(f'Your race is {self.race}')
+        print(f"You're class is {self.class_name.capitalize()}")
         print(self.modifiers)
         for k, v in self.scores.items():
-            print(f'{k} is {v + self.race.getRaceAdjustments(k)}')
+            print(f'{k} is {v + Race.getRaceAdjustments(k)}')
 
         
     ### determines modifiers            
@@ -169,5 +201,8 @@ class RandomCharacter(Character):
                 self.class_name = 'Warlock'
 
 
-
+    ### Chooses a random race
+    def randomRace(self):
+        self.race = randint(0,len(Race.races)- 1)
+        return Race.races[self.race]
 

@@ -4,21 +4,29 @@ from random import randint
 class Race:
     races = ['Dwarf', 'Elf', 'Halfling', 'Human', 'Dragonborn', 'Gnome', 'Half-Elf', 'Half-Orc', 'Tiefling']
     def __init__(self):
-        self.race = randint(0,len(self.races)- 1)
-
+        self.race = self.chooseRace()    
+        
 ### Has user select character's race
     #def chooseRace(self):
         #for race in self.races:
             #print(f"{race}")
         #print("Choose a race for your character. ")
 
+    def chooseRace(self):
+        
+        races = self.races
+        
+        while True:
+            raceChoice = input('Please select a race: ')
+            if raceChoice.capitalize() in races:
+                return raceChoice
+            else:
+                print('Please select a valid race.')
 
-    ### Chooses a random race
-    def getRace(self):
-        return self.races[self.race]
+    
     
     def getRaceAdjustments(self, score):
-        race = self.getRace()
+        race = self.race
         if race == 'Dwarf':
             return 2 if score == 'Constitution' else 0
         elif race == 'Elf' or 'Halfling':
